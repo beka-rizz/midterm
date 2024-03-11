@@ -1,0 +1,12 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+<h1>Consumers</h1>
+<a href="{% url 'create_consumer' %}">Create Consumer</a>
+<ul>
+  {% for consumer in consumers %}
+  <li>{{ consumer }}</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'index' %}">Go to homepage</a>
+{% endblock %}

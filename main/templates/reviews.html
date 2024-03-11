@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Reviews</h1>
+{% if request.user.is_staff %}
+<a href="{% url 'create_review' %}">Create Review</a>
+{% endif %}
+
+<form action="{% url 'reviews' %}" method="get">
+  <button type="submit" name="sort_by" value="book">Sort by Book Name</button>
+</form>
+
+<form action="{% url 'reviews' %}" method="get">
+  <button type="submit" name="sort_by" value="user">Sort by User</button>
+</form>
+
+<ul>
+  {% for review in reviews %}
+  <li>
+    <i> "{{ review.text }}" </i> by <strong> {{ review.user }} </strong> 
+    for "{{ review.book.title }}"
+  </li>
+  {% endfor %}
+</ul>
+<a href="{% url 'index' %}">Go to homepage</a>
+{% endblock %}

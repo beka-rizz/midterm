@@ -1,0 +1,12 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Categories</h1>
+{% if request.user.is_staff %}
+<a href="{% url 'create_category' %}">Create Category</a>
+{% endif %}
+<ul>
+  {% for category in categories %}
+  <li>{{ category.name }}</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'index' %}">Go to homepage</a>
+{% endblock %}

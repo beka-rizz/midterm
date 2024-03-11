@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Authors</h1>
+{% if request.user.is_staff %}
+<a href="{% url 'create_author' %}">Create Author</a>
+{% endif %}
+<ul>
+  {% for author in authors %}
+  <li>{{ author }}</li>
+  {% endfor %}
+</ul>
+<a href="{% url 'index' %}">Go to homepage</a>
+{% endblock %}

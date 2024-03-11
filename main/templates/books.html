@@ -1,0 +1,14 @@
+{% extends 'base.html' %} {% load custom_filter %} {% block content %}
+<h1>Books</h1>
+{% if request.user.is_staff %}
+<a href="{% url 'create_book' %}">Create Book</a>
+{% endif %}
+<ul>
+  {% for book in books|sort_books_by_name %}
+  <li>
+    <a href="{% url 'get_book' book.id %}"> {{ book.title }} </a>
+  </li>
+  {% endfor %}
+</ul>
+<a href="{% url 'index' %}">Go to homepage</a>
+{% endblock %}
