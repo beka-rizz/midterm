@@ -8,7 +8,34 @@
       rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
     />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+    </style>
     <title>My Django App</title>
+    <style>
+      a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      .logout {
+        color: brown;
+      }
+    </style>
   </head>
   <body>
     <div class="container">
@@ -16,7 +43,7 @@
         <div class="col-md-12">{% block content %} {% endblock %}</div>
       </div>
       <div class="row">
-        <a href="{% url 'logout' %}">Log out</a>
+        <a href="{% url 'logout' %}" class="logout">Log out</a>
       </div>
     </div>
   </body>

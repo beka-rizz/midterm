@@ -40,9 +40,9 @@ def login_view(request):
           return redirect(next)
         return HttpResponse("OK")
       except Exception:
-        return HttpResponse("NOT OK")
+        return render(request, 'error.html', {'title': 'Invalid credentials', 'message': 'Please, enter valid user data.'})
     else:
-      raise Exception(f"error occured: {form.errors}")
+      return render(request, 'error.html', {'title': 'Invalid credentials', 'message': 'Please enter a correct username and password. Note that both fields may be case-sensitive.'})
   return render(request, 'login.html', {'form': forms.AuthenticationForm()})
 
 
