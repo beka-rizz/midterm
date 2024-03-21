@@ -2,7 +2,11 @@
 
 {% block content %}
 <h1>Consumers</h1>
-<a href="{% url 'create_consumer' %}">Create Consumer</a>
+<form method="post" action="{% url 'consumers' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create Consumer</button>
+</form>
 <ul>
   {% for consumer in consumers %}
   <li>{{ consumer }}</li>

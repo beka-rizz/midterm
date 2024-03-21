@@ -46,64 +46,12 @@ def login_view(request):
   return render(request, 'login.html', {'form': forms.AuthenticationForm()})
 
 
-# Get methods
 @decorators.login_required(login_url='login')
-def get_users(request):
-  users = User.objects.all()
-  return render(request, 'users.html', {'users': users})
-
-@decorators.login_required(login_url='login')
-def get_authors(request):
-  authors = Author.objects.all()
-  return render(request, 'authors.html', {'authors': authors})
-
-@decorators.login_required(login_url='login')
-def get_categories(request):
+def users(request):
   if request.method == 'GET':
-    categories = Category.objects.all()
-    return render(request, 'categories.html', {'categories': categories})
+    users = User.objects.all()
+    return render(request, 'users.html', {'users': users})
   
-@decorators.login_required(login_url='login')
-def get_books(request):
-  sort_by = request.GET.get('sort_by')
-
-  books = Book.objects
-
-  if sort_by == 'author':
-    books = books.order_by_author()
-  else:
-    books = books.all()
-
-  return render(request, 'books.html', {'books': books})
-
-@decorators.login_required(login_url='login')
-def get_book(request, id):
-  book = Book.objects.get(pk=id)
-  if book:
-    return render(request, 'book.html', {'book': book})
-  else:
-    return HttpResponse("Book doesn't exist!")
-
-@decorators.login_required(login_url='login')
-def get_consumers(request):
-  consumers = Consumer.objects.all()
-  return render(request, 'consumers.html', {'consumers': consumers})
-
-@decorators.login_required(login_url='login')
-def get_reviews(request):
-  sort_by = request.GET.get('sort_by')
-
-  reviews = Review.objects.all()
-
-  if sort_by == 'book':
-    reviews = sorted(reviews, key=lambda review: review.book.title)
-  elif sort_by == 'user':
-    reviews = sorted(reviews, key=lambda review: review.user.username)
-
-  return render(request, 'reviews.html', {'reviews': reviews})
-
-@staff_member_required(login_url='login')
-def create_user(request):
   if request.method == 'POST':
     form = forms.UserCreationForm(request.POST)
     try:
@@ -117,44 +65,11 @@ def create_user(request):
   context = {'form': form, 'model': 'user'}
   return render(request, 'form.html', context)
 
-@staff_member_required(login_url='login')
-def create_category(request):
-  if request.method == 'POST':
-    form = CategoryForm(request.POST)
-    if form.is_valid():
-      form.save()
-      return redirect('/categories')
-  else:
-    form = CategoryForm()
-  context = {'form': form, 'model': 'category'}
-  return render(request, 'form.html', context)
-
-@staff_member_required(login_url='login')
-def create_book(request):
-  if request.method == 'POST':
-    form = BookForm(request.POST)
-    if form.is_valid():
-      form.save()
-      return redirect('/books')
-  else:
-    form = BookForm()
-  context = {'form': form, 'model': 'book'}
-  return render(request, 'form.html', context)
-
-@staff_member_required(login_url='login')
-def create_review(request):
-  if request.method == 'POST':
-    form = ReviewForm(request.POST)
-    if form.is_valid():
-      form.save()
-      return redirect('/reviews')
-  else:
-    form = ReviewForm()
-  context = {'form': form, 'model': 'review'}
-  return render(request, 'form.html', context)
-
-@staff_member_required(login_url='login')
-def create_author(request):
+@decorators.login_required(login_url='login')
+def authors(request):
+  if request.method == 'GET':
+    authors = Author.objects.all()
+    return render(request, 'authors.html', {'authors': authors})
   if request.method == 'POST':
     form = AuthorForm(request.POST)
     if form.is_valid():
@@ -165,8 +80,54 @@ def create_author(request):
   context = {'form': form, 'model': 'author'}
   return render(request, 'form.html', context)
 
-@staff_member_required(login_url='login')
-def create_consumer(request):
+@decorators.login_required(login_url='login')
+def categories(request):
+  if request.method == 'GET':
+    categories = Category.objects.all()
+    return render(request, 'categories.html', {'categories': categories})
+  if request.method == 'POST':
+    form = CategoryForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('/categories')
+  else:
+    form = CategoryForm()
+  context = {'form': form, 'model': 'category'}
+  return render(request, 'form.html', context)
+
+@decorators.login_required(login_url='login')
+def books(request):
+  if request.method == 'GET':
+    sort_by = request.GET.get('sort_by')
+    books = Book.objects
+    if sort_by == 'author':
+      books = books.order_by_author()
+    else:
+      books = books.all()
+    return render(request, 'books.html', {'books': books})
+  if request.method == 'POST':
+    form = BookForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('/books')
+  else:
+    form = BookForm()
+  context = {'form': form, 'model': 'book'}
+  return render(request, 'form.html', context)
+
+@decorators.login_required(login_url='login')
+def get_book(request, id):
+  book = Book.objects.get(pk=id)
+  if book:
+    return render(request, 'book.html', {'book': book})
+  else:
+    return HttpResponse("Book doesn't exist!")
+
+@decorators.login_required(login_url='login')
+def consumers(request):
+  if request.method == 'GET':
+    consumers = Consumer.objects.all()
+    return render(request, 'consumers.html', {'consumers': consumers})
   if request.method == 'POST':
     form = ConsumerForm(request.POST)
     if form.is_valid():
@@ -175,4 +136,24 @@ def create_consumer(request):
   else:
     form = ConsumerForm()
   context = {'form': form, 'model': 'consumer'}
+  return render(request, 'form.html', context)
+
+@decorators.login_required(login_url='login')
+def reviews(request):
+  if request.method == 'GET':
+    sort_by = request.GET.get('sort_by')
+    reviews = Review.objects.all()
+    if sort_by == 'book':
+      reviews = sorted(reviews, key=lambda review: review.book.title)
+    elif sort_by == 'user':
+      reviews = sorted(reviews, key=lambda review: review.user.username)
+    return render(request, 'reviews.html', {'reviews': reviews})
+  if request.method == 'POST':
+    form = ReviewForm(request.POST)
+    if form.is_valid():
+      form.save()
+      return redirect('/reviews')
+  else:
+    form = ReviewForm()
+  context = {'form': form, 'model': 'review'}
   return render(request, 'form.html', context)

@@ -1,9 +1,11 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 <h1>Authors</h1>
 {% if request.user.is_staff %}
-<a href="{% url 'create_author' %}">Create Author</a>
+<form method="post" action="{% url 'authors' %}">
+  {% csrf_token %} 
+  {{ form.as_p }}
+  <button type="submit">Create Author</button>
+</form>
 {% endif %}
 <ul>
   {% for author in authors %}

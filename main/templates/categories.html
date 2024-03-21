@@ -1,7 +1,11 @@
 {% extends 'base.html' %} {% block content %}
 <h1>Categories</h1>
 {% if request.user.is_staff %}
-<a href="{% url 'create_category' %}">Create Category</a>
+<form method="post" action="{% url 'categories' %}">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create Category</button>
+</form>
 {% endif %}
 <ul>
   {% for category in categories %}
