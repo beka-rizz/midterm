@@ -65,7 +65,15 @@ def get_categories(request):
   
 @decorators.login_required(login_url='login')
 def get_books(request):
-  books = Book.objects.all()
+  sort_by = request.GET.get('sort_by')
+
+  books = Book.objects
+
+  if sort_by == 'author':
+    books = books.order_by_author()
+  else:
+    books = books.all()
+
   return render(request, 'books.html', {'books': books})
 
 @decorators.login_required(login_url='login')
